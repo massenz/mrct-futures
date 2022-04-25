@@ -32,6 +32,20 @@ An `Account` is protected by a `Private Key` which is made up of 64 hex characte
 
 `Public Key` is generated with an EC signature algorithm (Keccak-256), last 20 bytes.
 
+### Ether and Wei
+
+One `wei` is 10<sup>-18</sup> `ether`; one `gwei` is 10<sup>9</sup> `wei` and there are 10<sup>9</sup> `gwei` in 1 `ether`.
+
+At current prices (4/24/2022) 1 ETH ~ 2,854 USD, so 1 USD ~ 350k `gwei`
+
+With `gas` price hovering around 15-20 `gwei` this week, and a transaction costing 21,000 `gas`, sending a contract to the ETH blockchain costs around:
+
+```
+21,000 gas x 20 gwei / 350,00 = $1.20
+```
+
+plus the cost of the contract execution.
+
 
 ## Setup
 
@@ -129,6 +143,24 @@ Used `npx hardhat compile` to compile my `contracts` to `artifacts`, and then de
 └─( npx hardhat run ./scripts/deploy.js --network mumbai
 Token deployed to: 0x3ec2C1426A615F3bD59Ca31203657bc9E2e53d18
 ```
+
+## Deployment
+
+
+```
+└─( npx hardhat run ./scripts/deploy.js --network mumbai
+```
+
+
+The deployment of the Contract can be seen in the [TESTNET Polygon Explorer](https://mumbai.polygonscan.com/): use the address emitted by the script to confirm the transaction was successfully processed.
+
+When running the `issue.js` script, we need a `Provider` (see [`ethers` API Providers](https://docs.ethers.io/v5/api/providers/api-providers/)); if the name of the provider is not one recognized, it will emit a cryptic error:
+
+```
+TypeError: Cannot read properties of null (reading 'name')
+```
+
+See the `AlchemyProvider` doc page for a list of allowed providers (we use `maticmum` for the Polygon Matic Mumbai testnet).
 
 
 

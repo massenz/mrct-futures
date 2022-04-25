@@ -19,5 +19,8 @@ contract MarcoToken is ERC20Capped, Ownable {
 
     function issueTokens(uint tokens) public onlyOwner {
         _mint(msg.sender, tokens * 10^decimals());
+        emit TokensMinted(tokens);
     }
+
+    event TokensMinted(uint amount);
 }
