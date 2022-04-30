@@ -1,10 +1,10 @@
 // Created by Marco, 2022-04-24
 //
-// Issues 200 MarcoTokens to yours truly.
+// Transfers an amount of MarcoTokens to a Wallet.
 
 
 // Secret values from .env file
-const {PRIVATE_KEY, API_KEY, CONTRACT_ADDRESS, WALLET} = process.env
+const {PRIVATE_KEY, API_KEY, CONTRACT_ADDRESS, OWNER} = process.env
 
 // We use the Polygon Network MATIC testnet
 const NETWORK = "maticmum"
@@ -16,29 +16,27 @@ const NETWORK = "maticmum"
 const contract = require("../artifacts/contracts/Token.sol/MarcoToken.json");
 
 
-async function main() {
+async function xfer(wallet, amount) {
     // Alchemy Provider
     // See: https://docs.ethers.io/v5/api/providers/api-providers/#AlchemyProvider
     const alchemyProvider = new ethers.providers.AlchemyProvider(network=NETWORK, API_KEY);
     // Signer
     const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
-
     // Contract
     const marcoTokenContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 
+    const balance = await marcoTokenContract.balanceOf(OWNER);
+    console.log("Supply Left: ", balance.toNumber(), "willies");
+    if (balance.toNumber() < amount) {
+        console.error("Not enough funds to transfer", amount, "willies")
+        return
+    }
 
-    let tx = await marcoTokenContract.issueTokens(100000);
+    let tx = await marcoTokenContract.transfer(wallet, amount);
     await tx.wait();
 
-    const balance = await marcoTokenContract.balanceOf(WALLET);
-    let willies = balance.toNumber();
-    console.log("Current Supply: ", willies);
+    const cb = await marcoTokenContract.balanceOf(wallet);
+    console.log("The wallet now has: ", cb.toNumber(), "willies");
 }
 
-// Runs main()
-main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-        console.error(error);
-        process.exit(1);
-    });
+export { xfer }
