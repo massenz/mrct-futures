@@ -2,6 +2,8 @@
 
 *Created by M. Massenzio, 2022-04-15*
 
+![MarcoToken on Alchemy](images/marcotoken.png)
+
 # Concepts
 
 A `Smart Contract` is a program that runs on the ETH B/c, a collection of code/data that resides at a specific address; it is a type of `Account`, so it can send transactions over the network and has a balance.
@@ -146,13 +148,15 @@ Token deployed to: 0x3ec2C1426A615F3bD59Ca31203657bc9E2e53d18
 
 ## Deployment
 
-
 ```
 └─( npx hardhat run ./scripts/deploy.js --network mumbai
 ```
 
-
 The deployment of the Contract can be seen in the [TESTNET Polygon Explorer](https://mumbai.polygonscan.com/): use the address emitted by the script to confirm the transaction was successfully processed.
+
+The token can then be added to Metamask walled, using the `Import Token` functionality and the contract's address, as emitted by the `deploy.js` script:
+
+![Metamask Wallet](images/wallet.jpg)
 
 When running the `issue.js` script, we need a `Provider` (see [`ethers` API Providers](https://docs.ethers.io/v5/api/providers/api-providers/)); if the name of the provider is not one recognized, it will emit a cryptic error:
 
@@ -162,6 +166,12 @@ TypeError: Cannot read properties of null (reading 'name')
 
 See the `AlchemyProvider` doc page for a list of allowed providers (we use `maticmum` for the Polygon Matic Mumbai testnet).
 
+
+# Interacting with a Contract
+
+Using Hardhat [tasks](https://hardhat.org/guides/create-task.html#creating-a-task), we need to install `Web3.js`:
+
+    npm install --save-dev @nomiclabs/hardhat-web3 web3
 
 
 ## References
