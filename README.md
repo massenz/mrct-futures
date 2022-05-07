@@ -129,16 +129,6 @@ and added `Token.sol` to be deployed via `deploy.js`.
 
 Hardhat provides some basic functionality:
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
-
 Used `npx hardhat compile` to compile my `contracts` to `artifacts`, and then deploy with the `deploy.js` script:
 
 ```
