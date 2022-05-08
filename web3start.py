@@ -38,10 +38,10 @@ def new_transaction(w3conn, owner, gas=200000):
 
 
 def get_web3_conn():
-    alchemy = Web3.HTTPProvider(get_env('API_URL', is_hex=False))
-    if not alchemy.isConnected():
+    provider = Web3.HTTPProvider(get_env('API_URL', is_hex=False))
+    if not provider.isConnected():
         raise RuntimeError("Cannot connect")
-    return Web3(alchemy)
+    return Web3(provider)
 
 
 def get_contract(w3conn):
