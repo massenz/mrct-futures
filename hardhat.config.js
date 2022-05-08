@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) M. Massenzio, 2022.
+ * All rights reserved.
+ */
+
 // Created by Marco, 2022-04-13
 //
 // Hardhat deployment configuration.

@@ -1,5 +1,6 @@
-/* Copyright M. Massenzio (c) 2022
-   Created 2022-04-29
+/*
+ * Copyright (c) M. Massenzio, 2022.
+ * All rights reserved.
  */
 
 const TokenName = "MarcoToken"
