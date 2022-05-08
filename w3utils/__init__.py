@@ -2,8 +2,12 @@
 #  All rights reserved.
 import json
 
+from eth_account import Account
+from eth_account.signers.local import LocalAccount
 from web3 import Web3
 import web3.eth
+from web3.auto import w3
+from web3.middleware import construct_sign_and_send_raw_middleware
 
 from utils import get_env
 
@@ -41,11 +45,16 @@ def new_transaction(w3conn, owner, gas=200000):
     }
 
 
-def sign_send_tx(w3conn, tx):
+def sign_send_tx(w3conn, tx, pk):
     """Signs the transaction and sends it to the ETH blockchain"""
-    pk = get_env("PRIVATE_KEY")
+    # TODO: should be possible to create an Account from PK and then simply send Tx
+    #   using:
+    #       w3.middleware_onion.add(construct_sign_and_send_raw_middleware(account))
     signed_tx = web3.eth.Account.signTransaction(tx, pk)
     tx_hash = w3conn.eth.send_raw_transaction(signed_tx.rawTransaction)
     w3conn.eth.wait_for_transaction_receipt(tx_hash)
 
 
+def wallet_addr(private_key):
+    account: LocalAccount = Account.from_key(private_key)
+    return account.address
