@@ -8,18 +8,28 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 contract MarcoToken is ERC20Capped, Ownable {
 
     // Specify the decimals: one Marco Token can be subdivided in 10^6
-    // (one milion) Willies.
+    // (one million) Willies.
     function decimals() public view virtual override returns (uint8) {
       return 6;
     }
 
+    // MarcoTokens are capped at 1,000 (10^9 Willies)
     constructor() ERC20("MarcoToken", "MRCT")
         ERC20Capped(1000000000) {
     }
 
+    // Issues whole tokens (1M Willies)
     function issueTokens(uint tokens) public onlyOwner {
-        _mint(msg.sender, tokens * 10^6);
-        emit TokensMinted(tokens);
+        uint willies =  tokens * 10**6;
+        _mint(msg.sender, willies);
+        emit TokensMinted(willies);
+    }
+
+    // Issues thousandths of tokens (`millies`)
+    function issueMillies(uint millies) public onlyOwner {
+        uint willies = millies * 10^3;
+        _mint(msg.sender, willies);
+        emit TokensMinted(willies);
     }
 
     event TokensMinted(uint amount);

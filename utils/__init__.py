@@ -1,8 +1,11 @@
 #  Copyright (c) M. Massenzio, 2022.
 #  All rights reserved.
 
+# Change to .env for the "real" Tx
+envloc = 'ganache.env'
 
-def get_env(key, envloc=".env", is_hex=True):
+
+def get_env(key, is_hex=True):
     """ Retrieves an env var from the given `envloc` location
 
      It will optionally prefix it with `0x` if the property is deemed to be `hex` (the default)
@@ -10,6 +13,8 @@ def get_env(key, envloc=".env", is_hex=True):
     """
     with open(envloc) as env:
         for line in env.readlines():
+            if line.startswith('#'):
+                continue
             if line.startswith(key):
                 pk = line.split("=")[1].replace('"', '').strip()
                 if is_hex and not pk.startswith('0x'):

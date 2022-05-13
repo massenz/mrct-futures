@@ -24,6 +24,7 @@ def send(recipient, amount):
     w3conn = get_web3_conn()
     contract = get_contract(w3conn)
     owner = get_env('OWNER')
+    recipient = get_env(recipient)
 
     # Send tokens to `recipient` from the `owner`
     tx = contract.functions.transfer(recipient, amount).buildTransaction(
