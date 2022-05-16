@@ -3,19 +3,24 @@
 
 import unittest
 
-from base import TestBase
+from base import TestBase, deploy_contract
 from scripts.mint import mint, get_contract
 from utils import get_env
 from w3utils import tokens_from_units, get_web3_conn
 
 
 class TestContract(TestBase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.contract_addr = deploy_contract()
+
     def setUp(self) -> None:
         self.owner = get_env('TEST_OWNER')
         self.pk = get_env('TEST_KEY')
+        self.assertIsNotNone(self.contract_addr)
 
     def test_can_mint(self):
-        self.assertIsNotNone(self.contract_addr)
         willies = mint(
             self.contract_addr,
             100,

@@ -66,3 +66,4 @@ def sign_send_tx(w3conn: w3, tx: dict, pk: str):
 def wallet_addr(private_key: str) -> str:
     account: LocalAccount = Account.from_key(private_key)
     return account.address
+
