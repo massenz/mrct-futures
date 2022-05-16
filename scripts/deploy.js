@@ -14,7 +14,7 @@ async function main() {
   const DevToken = await hre.ethers.getContractFactory(TokenName);
   const devToken = await DevToken.deploy();
 
-  console.log("Contract deployed to:", devToken.address);
+  console.log(devToken.address);
 }
 
 main()

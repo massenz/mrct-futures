@@ -51,10 +51,9 @@ plus the cost of the contract execution.
 
 ## Setup
 
-Setting up the dev env with [REMIX](https://remix.ethereum.org/) and creating the first token: see the [Token.sol](token.sol) source.
+Setting up the dev env with [REMIX](https://remix.ethereum.org/) and creating the first token: see the [Token.sol](contracts/Token.sol) source.
 
 ```typescript
-
 contract MarcoToken is ERC20Capped, Ownable {
 
     // Specify the decimals: one Marco Token can be subdivided in 10^6
@@ -69,7 +68,6 @@ contract MarcoToken is ERC20Capped, Ownable {
         _mint(msg.sender, tokens * TOKEN);
     }
 }
-
 ```
 
 For local development we use [Hardhat](https://hardhat.org/):
@@ -101,6 +99,14 @@ v16.14.2
 **TODO**
 > Audit finds many vulnerabilities, some `high`: fix them
 
+4. Install Ganache
+
+For local development, we use [Ganache](https://trufflesuite.com/docs/ganache/) installed locally.
+
+Download [the Linux AppInit file](https://trufflesuite.com/ganache/), `chmod +x` it and then execute it.
+
+This will run a server on `http://127.0.0.1:8545` which will need to be configured in the `API_URL` (see the `ganache.env` configuration).
+
 ## Alchemy & MATIC
 
 Created an account with [Alchemy](https://dashboard.alchemyapi.io/) and created my first app (`MarcoToken`), and configured to use the Mumbai Polygon network.
@@ -129,17 +135,21 @@ and added `Token.sol` to be deployed via `deploy.js`.
 
 Hardhat provides some basic functionality:
 
-Used `npx hardhat compile` to compile my `contracts` to `artifacts`, and then deploy with the `deploy.js` script:
+Used `npx hardhat compile` to compile my `contracts` to `artifacts` (these will be needed by `Web3Py` to extract the `ABI` and execute RPC calls against the contract).
+
+## Deployment
+
+Deploy with Hardhat using the `deploy.js` script
 
 ```
 └─( npx hardhat run ./scripts/deploy.js --network mumbai
 Token deployed to: 0x3ec2C1426A615F3bD59Ca31203657bc9E2e53d18
 ```
-
-## Deployment
+or locally to the Ganache blockchain:
 
 ```
-└─( npx hardhat run ./scripts/deploy.js --network mumbai
+└─( npx hardhat --network localhost run scripts/deploy.js
+Contract deployed to: 0x308Bd7f1518E68cF1811ad00e4bbF185dDcca43c
 ```
 
 The deployment of the Contract can be seen in the [TESTNET Polygon Explorer](https://mumbai.polygonscan.com/): use the address emitted by the script to confirm the transaction was successfully processed.
@@ -159,9 +169,14 @@ See the `AlchemyProvider` doc page for a list of allowed providers (we use `mati
 
 # Interacting with a Contract
 
-Using Hardhat [tasks](https://hardhat.org/guides/create-task.html#creating-a-task), we need to install `Web3.js`:
 
-    npm install --save-dev @nomiclabs/hardhat-web3 web3
+# Tests
+
+This repository is configured to run tests against the newly crafted Solidity code via a number of Python tests which interact with the Contract itself.
+
+To test any changes to the `.sol` file have been successful use:
+
+    python -m unittest discover -s tests  
 
 
 ## References
@@ -176,3 +191,9 @@ Using Hardhat [tasks](https://hardhat.org/guides/create-task.html#creating-a-tas
 - [Ethereum Accounts](https://ethereum.org/en/developers/docs/accounts/)
 
 - [Build Sandbox](https://sandbox.eth.build/)
+
+- [Ganache](https://trufflesuite.com/ganache/)
+
+- [Web3Py](https://web3py.readthedocs.io/en/stable/)
+
+- [Smart Contract Development with Solidity and Ethereum (O'Reilly online)](https://learning.oreilly.com/library/view/hands-on-smart-contract/9781492045250/)
