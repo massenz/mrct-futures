@@ -2,20 +2,19 @@
 #  All rights reserved.
 import json
 
+import web3
 import web3.eth
 from eth_account import Account
 from eth_account.signers.local import LocalAccount
 from web3 import Web3
 from web3.auto import w3
 
-from utils import get_env
-
 ARTIFACTS = 'artifacts/contracts'
 
 
-def get_web3_conn(url: str) -> Web3:
+def w3_conn(url: str) -> Web3:
     """Connects to the provider designated in the API_URL env var"""
-    provider = Web3.HTTPProvider(get_env(url, is_hex=False))
+    provider = Web3.HTTPProvider(url)
     if not provider.isConnected():
         raise RuntimeError("Cannot connect")
     return Web3(provider)
@@ -43,14 +42,20 @@ def get_abi(solidity: str, contract: str) -> dict:
         return json.load(c).get('abi')
 
 
-def new_transaction(w3conn: w3, owner: str, gas=200000) -> dict:
+# TODO: add **kwargs
+def new_transaction(w3conn: w3, owner: str, to: str = None, value: int = None, gas=200000) -> dict:
     """Creates a new dict to represent a Tx to be sent to the Contract"""
-    return {
+    tx = {
         'from': owner,
         'nonce': w3conn.eth.get_transaction_count(owner),
         'gas': gas,
         'gasPrice': w3conn.eth.gas_price
     }
+    if to is not None:
+        tx['to'] = to
+    if value is not None:
+        tx['value'] = value
+    return tx
 
 
 def sign_send_tx(w3conn: w3, tx: dict, pk: str):
@@ -67,3 +72,7 @@ def wallet_addr(private_key: str) -> str:
     account: LocalAccount = Account.from_key(private_key)
     return account.address
 
+
+def get_contract(w3conn: web3.Web3, address: str) -> web3.eth.Contract:
+    abi = get_abi('Token', 'MarcoToken')
+    return w3conn.eth.contract(address=address, abi=abi)

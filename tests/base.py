@@ -10,7 +10,8 @@ from eth_account import Account
 from eth_account.hdaccount import ETHEREUM_DEFAULT_PATH
 from eth_account.signers.local import LocalAccount
 
-from utils import run_hh_script
+from utils import run_hh_script, get_env
+from w3utils import w3_conn
 
 
 def deploy_contract():
@@ -21,6 +22,11 @@ def deploy_contract():
 
 
 class TestBase(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        print(">>>> deploying contract")
+        cls.contract_addr = deploy_contract()
+
     @staticmethod
     def temp_filename(suffix=None):
         """ Returns a temporary file."""
@@ -37,3 +43,7 @@ class TestBase(unittest.TestCase):
             account = Account.from_mnemonic(mnemonic, account_path=account_path)
             keypairs.append((account.address, web3.Web3.toHex(account.key)))
         return keypairs
+
+    def setUp(self) -> None:
+        self.url = get_env('LOCAL_URL')
+        self.w3 = w3_conn(self.url)

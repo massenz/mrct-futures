@@ -1,43 +1,28 @@
 #  Copyright (c) M. Massenzio, 2022.
 #  All rights reserved.
 
-import unittest
-
-from base import TestBase, deploy_contract
-from scripts.mint import mint, get_contract
+from base import TestBase
+from mrct import MRCT
 from utils import get_env
-from w3utils import tokens_from_units, get_web3_conn
+from w3utils import tokens_from_units
 
 
 class TestContract(TestBase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.contract_addr = deploy_contract()
-
     def setUp(self) -> None:
+        super().setUp()
         self.owner = get_env('TEST_OWNER')
         self.pk = get_env('TEST_KEY')
         self.assertIsNotNone(self.contract_addr)
+        self.mrct = MRCT(address=self.contract_addr, private_key=self.pk, url=get_env('LOCAL_URL'))
 
     def test_can_mint(self):
-        willies = mint(
-            self.contract_addr,
-            100,
-            self.owner,
-            self.pk)
+        willies = self.mrct.mint(100)
         self.assertEqual(100, tokens_from_units(willies, 6))
 
     def test_mint_increase_owner_balance(self):
-        contract = get_contract(get_web3_conn('LOCAL_URL'), self.contract_addr)
-        balance = contract.functions.balanceOf(self.owner).call()
+        balance = self.mrct.contract.functions.balanceOf(self.owner).call()
         increase = 225
-        mint(
-            self.contract_addr,
-            increase,
-            self.owner,
-            self.pk)
-        new_balance = contract.functions.balanceOf(self.owner).call()
-        self.assertAlmostEqual(new_balance,
-                               balance + increase * 10**6)
+        self.mrct.mint(increase)
+        new_balance = self.mrct.contract.functions.balanceOf(self.owner).call()
+        self.assertAlmostEqual(new_balance, balance + increase * 10**6)
 

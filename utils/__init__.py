@@ -9,7 +9,7 @@ from sh import npx
 ENV = '.env'
 
 
-def get_env(key, is_hex=True):
+def get_env(key):
     """ Retrieves an env var from the ENV location
 
      It will optionally prefix it with `0x` if the property is deemed to be `hex` (the default)
@@ -25,8 +25,6 @@ def get_env(key, is_hex=True):
             # TODO: Use a RegEx instead
             if line.startswith(key):
                 pk = line.split("=")[1].replace('"', '').strip()
-                if is_hex and not pk.startswith('0x'):
-                    pk = '0x' + pk
                 return pk
     raise KeyError(f"{key} not found in {ENV}")
 
