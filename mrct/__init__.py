@@ -9,7 +9,7 @@ This package manages the MCRT (MarcoToken) DAO Contract.
 The contract provides facilities to settle physical contracts (which are represented by NFTs -
 ERC721) via an ERC20 contract.
 
-See `contracts/Token.sol` for more details.
+See `contracts/MRCT.sol` for more details.
 """
 from eth_account import Account
 from eth_account.signers.local import LocalAccount

@@ -51,7 +51,7 @@ plus the cost of the contract execution.
 
 ## Setup
 
-Setting up the dev env with [REMIX](https://remix.ethereum.org/) and creating the first token: see the [Token.sol](contracts/Token.sol) source.
+Setting up the dev env with [REMIX](https://remix.ethereum.org/) and creating the first token: see the [Token.sol](contracts/MRCT.sol) source.
 
 ```typescript
 contract MarcoToken is ERC20Capped, Ownable {

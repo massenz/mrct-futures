@@ -44,17 +44,17 @@ class TestAccounts(TestBase):
         self.assertAlmostEqual(amount, float(w3.fromWei(balance - new_balance, 'ether')),
                                places=3)
 
-    def test_settle(self):
-        bob = self.pairs[7]
-        amount = 5
-        balance = self.w3.eth.get_balance(bob[0])
-        tx = new_transaction(
-            self.w3, owner=bob[0], value=w3.toWei(amount, 'ether'))
-        contract = get_contract(self.w3, self.contract_addr)
-        tx = contract.functions.settle().buildTransaction(tx)
-        sign_send_tx(self.w3, tx, bob[1])
-        new_balance = self.w3.eth.get_balance(bob[0])
-        self.assertAlmostEqual(amount, float(w3.fromWei(balance - new_balance, 'ether')),
-                               places=1)
-        self.assertEqual(amount, int(w3.fromWei(
-            self.w3.eth.get_balance(self.contract_addr), 'ether')))
+    # def test_settle(self):
+    #     bob = self.pairs[7]
+    #     amount = 5
+    #     balance = self.w3.eth.get_balance(bob[0])
+    #     tx = new_transaction(
+    #         self.w3, owner=bob[0], value=w3.toWei(amount, 'ether'))
+    #     contract = get_contract(self.w3, self.contract_addr)
+    #     tx = contract.functions.settle().buildTransaction(tx)
+    #     sign_send_tx(self.w3, tx, bob[1])
+    #     new_balance = self.w3.eth.get_balance(bob[0])
+    #     self.assertAlmostEqual(amount, float(w3.fromWei(balance - new_balance, 'ether')),
+    #                            places=1)
+    #     self.assertEqual(amount, int(w3.fromWei(
+    #         self.w3.eth.get_balance(self.contract_addr), 'ether')))

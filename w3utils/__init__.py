@@ -74,5 +74,5 @@ def wallet_addr(private_key: str) -> str:
 
 
 def get_contract(w3conn: web3.Web3, address: str) -> web3.eth.Contract:
-    abi = get_abi('Token', 'MarcoToken')
+    abi = get_abi('MRCT', 'MarcoToken')
     return w3conn.eth.contract(address=address, abi=abi)
