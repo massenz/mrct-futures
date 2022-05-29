@@ -1,12 +1,16 @@
 #  Copyright (c) M. Massenzio, 2022.
 #  All rights reserved.
+import json
 import os
 import pathlib
+import re
 
 from sh import npx
 
 
+ADDRESSES = 'addresses.json'
 ENV = '.env'
+KEYVALUE_PATTERN = r"\s*(?P<key>[^#]\w+)\s*=\s*[\"']?(?P<value>[^\"']+)[\"']?"
 
 
 def get_env(key):
@@ -20,19 +24,13 @@ def get_env(key):
 
     with open(ENV, 'r') as env:
         for line in env.readlines():
-            if line.startswith('#'):
-                continue
-            # TODO: Use a RegEx instead
-            if line.startswith(key):
-                pk = line.split("=")[1].replace('"', '').strip()
-                return pk
+            m = re.match(KEYVALUE_PATTERN, line)
+            if m and m['key'] == key:
+                return m['value']
     raise KeyError(f"{key} not found in {ENV}")
 
 
-def run_hh_script(script, scripts_dir='scripts', network='local'):
-    """Runs the Hardhat `script` in the `scripts_dir`, against the given network."""
-    script_path = os.sep.join([scripts_dir, script])
-    cmd = npx.hardhat("--network", network, "run", script_path)
-    # Here we convert the bytes output to string, remove any trailing newlines and then return
-    # only the last line (the contract's deployed address).
-    return cmd.stdout.decode().strip().split('\n')[-1]
+def get_addresses(filedir=None):
+    filedir = filedir or os.getcwd()
+    with open(os.sep.join([filedir, ADDRESSES])) as addresses:
+        return json.load(addresses)

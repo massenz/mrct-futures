@@ -37,7 +37,7 @@ class MRCT(object):
         self.owner: LocalAccount = Account.from_key(private_key or get_env('PRIVATE_KEY'))
         self.contract_address = address or get_env('CONTRACT_ADDRESS')
         self.w3 = w3_conn(url or get_env('API_URL'))
-        self.contract = get_contract(self.w3, self.contract_address)
+        self.contract = get_contract(self.w3, self.contract_address, "MarcoToken")
 
     @property
     def decimals(self):

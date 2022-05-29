@@ -15,8 +15,8 @@ contract MarcoToken is ERC20Capped, Ownable {
         return _dec;
     }
 
-    // MarcoTokens are capped at 1,000 (10^9 Willies)
-    constructor() ERC20("MarcoToken", "MRCT") ERC20Capped(1000000000) {
+    // MarcoTokens are capped at 1,000,000 (10^12 Willies)
+    constructor() ERC20("MarcoToken", "MRCT") ERC20Capped(1000000000000) {
         _dec = 6;
     }
 

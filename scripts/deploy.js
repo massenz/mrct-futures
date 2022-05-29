@@ -3,23 +3,30 @@
  * All rights reserved.
  */
 
-const TokenName = "MarcoToken"
 const hre = require("hardhat");
+const fs = require('fs')
 
 /**
  * Deploys the MarcoToken to the Ether blockchain.
  * @returns {Promise<void>}
  */
 async function main() {
-  const DevToken = await hre.ethers.getContractFactory(TokenName);
-  const devToken = await DevToken.deploy();
+    const Factory = await hre.ethers.getContractFactory("SettlementFactory");
+    const factory = await Factory.deploy();
 
-  console.log(devToken.address);
+    const MRCT = await hre.ethers.getContractFactory("MarcoToken");
+    const token = await MRCT.deploy();
+
+    const result = {
+        "MRCT": token.address,
+        "SettlementFactory": factory.address
+    };
+    console.log(JSON.stringify(result));
 }
 
 main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });

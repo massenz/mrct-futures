@@ -1,6 +1,7 @@
 # Copyright AlertAvert.com (c) 2017. All rights reserved.
 # Created by Marco Massenzio (marco@alertavert.com), 2017-09-03
 import codecs
+import json
 import os
 import tempfile
 import unittest
@@ -10,22 +11,25 @@ from eth_account import Account
 from eth_account.hdaccount import ETHEREUM_DEFAULT_PATH
 from eth_account.signers.local import LocalAccount
 
-from utils import run_hh_script, get_env
+from utils import (
+    ADDRESSES,
+    get_env,
+    get_addresses,
+)
 from w3utils import w3_conn
 
 
-def deploy_contract():
-    print(f"Deploying contract from {os.getcwd()}")
-    contract_addr = run_hh_script('deploy.js').strip()
-    print(f"Contract address: {contract_addr}")
-    return contract_addr
+def get_contracts() -> dict:
+    print(f"Getting contracts addresses from {os.sep.join([os.getcwd(), ADDRESSES])}")
+    addresses = get_addresses()
+    print(f"{json.dumps(addresses, indent=4)}")
+    return addresses
 
 
 class TestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        print(">>>> deploying contract")
-        cls.contract_addr = deploy_contract()
+        cls.contract_addr = get_contracts()
 
     @staticmethod
     def temp_filename(suffix=None):

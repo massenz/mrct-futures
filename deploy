@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+#
+# Created by M. Massenzio, 2022-05-28
+
+set -eu
+declare network=${1:-local}
+
+npx hardhat --network "${network}" run scripts/deploy.js  |\
+    python -m json.tool > addresses.json

@@ -13,11 +13,14 @@ class TestContract(TestBase):
         self.owner = get_env('TEST_OWNER')
         self.pk = get_env('TEST_KEY')
         self.assertIsNotNone(self.contract_addr)
-        self.mrct = MRCT(address=self.contract_addr, private_key=self.pk, url=get_env('LOCAL_URL'))
+        self.mrct = MRCT(address=self.contract_addr["MRCT"], private_key=self.pk, url=get_env(
+            'LOCAL_URL'))
 
     def test_can_mint(self):
+        balance = self.mrct.total_supply
         willies = self.mrct.mint(100)
-        self.assertEqual(100, tokens_from_units(willies, 6))
+        self.assertEqual(tokens_from_units(balance, self.mrct.decimals) + 100,
+                         tokens_from_units(willies, self.mrct.decimals))
 
     def test_mint_increase_owner_balance(self):
         balance = self.mrct.contract.functions.balanceOf(self.owner).call()
