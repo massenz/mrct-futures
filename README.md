@@ -169,6 +169,13 @@ See the `AlchemyProvider` doc page for a list of allowed providers (we use `mati
 
 # Interacting with a Contract
 
+# Future Contract
+
+This is defined in the `Future.sol` Solidity code, and allows a `buyer` and `seller` to agree to exchange a security by a given time, or the contract will expire.
+
+![Remix snapshot](images/remix-future.png)
+
+The `owner` of the contract (the address that deploys it) will collect a fee of `0.05 ETH` from the `seller` when they `pay()` for the contract: until the Future is paid, it cannot be settled - the `buyer` will then `settle()` the contract for the agreed-upon `value`, before the future expires (`expires_at` timestamp).
 
 # Tests
 
