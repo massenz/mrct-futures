@@ -3,9 +3,9 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./Settlement.sol";
+import "./Future.sol";
 
-contract SettlementFactory is Ownable {
+contract FuturesMarket is Ownable {
     SettlementContract[] private _futures;
 
     function count() public view returns (uint256) {

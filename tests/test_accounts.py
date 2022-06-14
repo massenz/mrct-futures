@@ -1,10 +1,13 @@
 #  Copyright (c) M. Massenzio, 2022.
 #  All rights reserved.
+import web3
 from web3.auto import w3
+
+from web3 import Web3
 
 from tests.base import TestBase
 from utils import get_env
-from w3utils import new_transaction, sign_send_tx, get_contract
+from w3utils import new_transaction, sign_send_tx, get_contract, w3_conn
 
 
 class TestAccounts(TestBase):
