@@ -59,7 +59,7 @@ class MRCT(object):
         :return: the resulting total supply in base units (Willies) which are a `10^decimals` fraction
                 of tokens (one millionth, when `decimals` is 6)
         """
-        tx = self.contract.functions.issueTokens(amount).buildTransaction(
+        tx = self.contract.functions.issueTokens(amount).build_transaction(
             new_transaction(self.w3, self.owner.address))
         sign_send_tx(self.w3, tx, self.owner.key)
 
@@ -69,7 +69,7 @@ class MRCT(object):
     def send(self, recipient: LocalAccount, amount: int) -> float:
         """Sends to `recipient` `amount` MRCT tokens """
         # Send tokens to `recipient` from the `owner`
-        tx = self.contract.functions.transfer(recipient.address, amount).buildTransaction(
+        tx = self.contract.functions.transfer(recipient.address, amount).build_transaction(
              new_transaction(self.w3, self.w3.toHex(self.owner.key)))
         sign_send_tx(self.w3, tx, self.owner.key)
 

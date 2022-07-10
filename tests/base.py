@@ -51,3 +51,6 @@ class TestBase(unittest.TestCase):
     def setUp(self) -> None:
         self.url = get_env('LOCAL_URL')
         self.w3 = w3_conn(self.url)
+        self.owner = get_env('owner')
+        self.pk = get_env('owner_pk')
+

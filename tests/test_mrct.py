@@ -7,14 +7,13 @@ from utils import get_env
 from w3utils import tokens_from_units
 
 
-class TestContract(TestBase):
+class TestMarcoToken(TestBase):
     def setUp(self) -> None:
         super().setUp()
-        self.owner = get_env('TEST_OWNER')
-        self.pk = get_env('TEST_KEY')
         self.assertIsNotNone(self.contract_addr)
-        self.mrct = MRCT(address=self.contract_addr["MRCT"], private_key=self.pk, url=get_env(
-            'LOCAL_URL'))
+        self.mrct = MRCT(address=self.contract_addr["MRCT"],
+                         private_key=self.pk,
+                         url=get_env('LOCAL_URL'))
 
     def test_can_mint(self):
         balance = self.mrct.total_supply
@@ -28,4 +27,3 @@ class TestContract(TestBase):
         self.mrct.mint(increase)
         new_balance = self.mrct.contract.functions.balanceOf(self.owner).call()
         self.assertAlmostEqual(new_balance, balance + increase * 10**6)
-
