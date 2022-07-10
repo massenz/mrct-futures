@@ -11,7 +11,7 @@ require('dotenv').config()
 
 // Secret values from .env file
 const { API_URL, PRIVATE_KEY } = process.env
-const { LOCAL_URL, TEST_KEY } = process.env
+const { LOCAL_URL, marco_pk } = process.env
 
 const defaultGanacheChainId = 1337
 
@@ -30,7 +30,7 @@ module.exports = {
     local: {
       url: LOCAL_URL,
       chainId: defaultGanacheChainId,
-      accounts: [TEST_KEY]
+      accounts: [marco_pk]
     }
   }
 };

@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Future {
 
+contract Future {
     // Settlement into the Contract
     struct Settlement {
         // The name of the asset being settled.
@@ -28,7 +28,7 @@ contract Future {
         address payable buyer_, address payable seller_) {
         settlement = Settlement({
             asset : asset_,
-            price : eth_ * 10**18,
+            price : eth_ * 10 ** 18,
             expires : settlesAt_
         });
         seller = seller_;
@@ -54,5 +54,23 @@ contract Future {
         require(msg.value == settlement.price, "The paid amount must match the Settlement agreed price");
         seller.transfer(settlement.price);
         settled = true;
+    }
+}
+
+contract FuturesDex is Ownable {
+    address[] private futures_;
+
+    function count() public view returns (uint256) {
+        return futures_.length;
+    }
+
+    function createFuture(string memory asset_, uint settlesAt_, uint eth_,
+            address payable buyer_, address payable seller_) public returns(uint) {
+
+        // Explicitly convert the newly created contract to its address.
+        address newFuture = address(
+            new Future(asset_, settlesAt_, eth_, buyer_, seller_));
+        futures_.push(newFuture);
+        return count() - 1;
     }
 }

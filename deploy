@@ -6,4 +6,4 @@ set -eu
 declare network=${1:-local}
 
 npx hardhat --network "${network}" run scripts/deploy.js  |\
-    python -m json.tool > addresses.json
+    python -m json.tool | tee addresses.json

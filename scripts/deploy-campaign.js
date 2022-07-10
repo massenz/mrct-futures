@@ -10,15 +10,11 @@ const hre = require("hardhat");
  * @returns {Promise<void>}
  */
 async function main() {
-    const Factory = await hre.ethers.getContractFactory("FuturesDex");
-    const factory = await Factory.deploy();
-
-    const MRCT = await hre.ethers.getContractFactory("MarcoToken");
-    const token = await MRCT.deploy();
+    const Campaign = await hre.ethers.getContractFactory("Campaign");
+    const token = await Campaign.deploy(100);
 
     const result = {
-        "MRCT": token.address,
-        "DEX": factory.address
+        "Campaign": token.address,
     };
     console.log(JSON.stringify(result));
 }
