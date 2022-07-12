@@ -22,13 +22,20 @@ class TestFuturesDex(TestBase):
     def test_exists(self):
         self.assertIsNotNone(self.contract)
 
-    def test_create_settlement(self):
-        settlements = self.contract.functions.count().call()
+    def test_create_future(self):
+        futures_count = self.contract.functions.count().call()
         tx = self.contract.functions.createFuture(
             'MSFT', int(time.time() + ONE_MONTH),  # Bob needs to hedge MSFT a month from now
             200,
             get_env('bob'),                        # Bob buys the future
             get_env('alice')                       # Alice sells it to Bob
         ).build_transaction(new_transaction(self.w3, self.owner))
-        sign_send_tx(self.w3, tx, self.pk)
-        self.assertEqual(settlements + 1, self.contract.functions.count().call())
+        self.assertIsNotNone(sign_send_tx(self.w3, tx, self.pk))
+        self.assertEqual(futures_count + 1, self.contract.functions.count().call())
+
+    def test_get_futures(self):
+        futures_count = self.contract.functions.count().call()
+        self.assertGreater(futures_count, 0)
+        future = self.contract.functions.futures(futures_count-1).call()
+        self.assertIsNotNone(future)
+

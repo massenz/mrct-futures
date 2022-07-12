@@ -63,7 +63,7 @@ def sign_send_tx(w3conn: w3, tx: dict, pk: str):
     #       w3.middleware_onion.add(construct_sign_and_send_raw_middleware(account))
     signed_tx = web3.eth.Account.sign_transaction(tx, pk)
     tx_hash = w3conn.eth.send_raw_transaction(signed_tx.rawTransaction)
-    w3conn.eth.wait_for_transaction_receipt(tx_hash)
+    return w3conn.eth.wait_for_transaction_receipt(tx_hash)
 
 
 def wallet_addr(private_key: str) -> str:

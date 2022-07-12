@@ -15,7 +15,7 @@ class TestAccounts(TestBase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.pairs = self.get_accounts()
+        self.pairs = TestAccounts.get_accounts()
 
     def test_ganache_accounts(self):
         self.assertEqual(

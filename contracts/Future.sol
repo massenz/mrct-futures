@@ -24,7 +24,7 @@ contract Future {
     bool public settled;
     bool private paid;
 
-    constructor(string memory asset_, uint settlesAt_, uint eth_,
+    constructor(address payable creator, string memory asset_, uint settlesAt_, uint eth_,
         address payable buyer_, address payable seller_) {
         settlement = Settlement({
             asset : asset_,
@@ -35,7 +35,7 @@ contract Future {
         buyer = buyer_;
         settled = false;
         paid = false;
-        owner_ = payable(msg.sender);
+        owner_ = creator;
     }
 
     function pay() public payable {
@@ -58,19 +58,19 @@ contract Future {
 }
 
 contract FuturesDex is Ownable {
-    address[] private futures_;
+    address[] public futures;
 
     function count() public view returns (uint256) {
-        return futures_.length;
+        return futures.length;
     }
 
     function createFuture(string memory asset_, uint settlesAt_, uint eth_,
-            address payable buyer_, address payable seller_) public returns(uint) {
+            address payable buyer_, address payable seller_) public returns(address) {
 
         // Explicitly convert the newly created contract to its address.
         address newFuture = address(
-            new Future(asset_, settlesAt_, eth_, buyer_, seller_));
-        futures_.push(newFuture);
-        return count() - 1;
+            new Future(payable(msg.sender), asset_, settlesAt_, eth_, buyer_, seller_));
+        futures.push(newFuture);
+        return newFuture;
     }
 }
