@@ -28,8 +28,8 @@ def tokens_from_units(units: float, decimals: int) -> float:
 def get_abi(solidity: str) -> dict:
     """Retrieves the ABI for the `artifact` (the Smart Contract)
 
-    :param solidity: the name of the Solidity contract class which defines the contract
-    :returns: a dict representing the contract's binary interface (ABI)
+    @param solidity: the name of the Solidity contract class which defines the contract
+    @returns: a dict representing the contract's binary interface (ABI)
     """
     jsonfile = solidity + '.json'
     for dirpath, _, fnames in os.walk(ARTIFACTS):

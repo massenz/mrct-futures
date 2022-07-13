@@ -33,6 +33,7 @@ contract Future {
         });
         seller = seller_;
         buyer = buyer_;
+
         settled = false;
         paid = false;
         owner_ = creator;

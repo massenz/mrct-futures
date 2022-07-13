@@ -16,7 +16,7 @@ An `account` is an entity with an ETH balance: it can
 
 ETH and `Tokens`.
 
-> Transactions from an external account to a contract account can trigger code which can execute many different actions, such as transferring tokens or even creating a new contract
+> Transactions from an external account to a contract account can trigger code which can execute many actions, such as transferring tokens or even creating a new contract
 
 Contract accounts have a 42 hex address (168 bits): it gets generated from the creator's address and their `nonce`.
 
@@ -53,11 +53,11 @@ plus the cost of the contract execution.
 
 Setting up the dev env with [REMIX](https://remix.ethereum.org/) and creating the first token: see the [Token.sol](contracts/MRCT.sol) source.
 
-```typescript
+```solidity
 contract MarcoToken is ERC20Capped, Ownable {
 
     // Specify the decimals: one Marco Token can be subdivided in 10^6
-    // (one milion) Willies.
+    // (one million) Willies.
     uint TOKEN = 10**6;
 
     constructor(uint256 cap) ERC20("MarcoToken", "MRCT")

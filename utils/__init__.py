@@ -5,9 +5,6 @@ import os
 import pathlib
 import re
 
-from sh import npx
-
-
 ADDRESSES = 'addresses.json'
 ENV = '.env'
 KEYVALUE_PATTERN = r"\s*(?P<key>[^#]\w+)\s*=\s*[\"']?(?P<value>[^\"']+)[\"']?"

@@ -1,8 +1,5 @@
 # Copyright AlertAvert.com (c) 2017. All rights reserved.
 # Created by Marco Massenzio (marco@alertavert.com), 2017-09-03
-import codecs
-import json
-import os
 import tempfile
 import unittest
 
@@ -10,26 +7,19 @@ import web3
 from eth_account import Account
 from eth_account.hdaccount import ETHEREUM_DEFAULT_PATH
 from eth_account.signers.local import LocalAccount
+from eth_typing import HexStr
 
 from utils import (
-    ADDRESSES,
     get_env,
     get_addresses,
 )
 from w3utils import w3_conn
 
 
-def get_contracts() -> dict:
-    print(f"Getting contracts addresses from {os.sep.join([os.getcwd(), ADDRESSES])}")
-    addresses = get_addresses()
-    print(f"{json.dumps(addresses, indent=4)}")
-    return addresses
-
-
 class TestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.contract_addr = get_contracts()
+        cls.contract_addr = get_addresses()
 
     @staticmethod
     def temp_filename(suffix=None):
@@ -38,7 +28,7 @@ class TestBase(unittest.TestCase):
         return filename
 
     @staticmethod
-    def keys_from_mnemonic(mnemonic: str, num: int = 10) -> list[LocalAccount]:
+    def keys_from_mnemonic(mnemonic: str, num: int = 10) -> list[tuple[LocalAccount, HexStr]]:
         # TODO: this is not a "stable" API yet
         Account.enable_unaudited_hdwallet_features()
         keypairs = []
@@ -53,4 +43,3 @@ class TestBase(unittest.TestCase):
         self.w3 = w3_conn(self.url)
         self.owner = get_env('owner')
         self.pk = get_env('owner_pk')
-
