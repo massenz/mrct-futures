@@ -14,4 +14,6 @@ accounts.yaml
 
 # IDE configs
 .idea/
-__pycache__
+addresses.json
+__pycache__/
+
